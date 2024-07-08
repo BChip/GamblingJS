@@ -6,6 +6,14 @@
     <title>American Roulette Table</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @keyframes neon-pulse {
+            0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #00ff00, 0 0 70px #00ff00, 0 0 80px #00ff00, 0 0 100px #00ff00, 0 0 150px #00ff00; }
+            50% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #00ff00, 0 0 35px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00, 0 0 75px #00ff00; }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
         .roulette-table {
             display: grid;
             grid-template-columns: repeat(14, 1fr);
@@ -13,9 +21,10 @@
             gap: 1px;
             width: 700px;
             height: 300px;
-            background-color: #0d5c2f;
-            border: 2px solid #764d29;
+            background-color: rgba(13, 92, 47, 0.8);
+            border: 2px solid #ffd700;
             padding: 2px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
         .cell {
             display: flex;
@@ -24,15 +33,14 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            border: 1px solid #764d29;
+            border: 1px solid #ffd700;
             position: relative;
         }
         .cell:hover {
             opacity: 0.8;
+            transform: scale(1.05);
         }
-        .zero, .double-zero {
-            grid-column: 1;
-        }
+        .zero, .double-zero { grid-column: 1; }
         .zero { grid-row: 1; }
         .double-zero { grid-row: 3; }
         .numbers {
@@ -61,10 +69,10 @@
             grid-template-rows: repeat(3, 1fr);
         }
         .chip {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background-color: white;
+            background: linear-gradient(145deg, #ffd700, #ffaa00);
             position: absolute;
             top: 2px;
             right: 2px;
@@ -73,38 +81,42 @@
             align-items: center;
             font-size: 10px;
             color: black;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
-<body class="bg-green-900 text-white p-8">
-    <div class="container mx-auto">
-        <h1 class="text-4xl font-bold mb-8 text-center">American Roulette</h1>
+<body class="bg-gradient-to-b from-gray-900 via-green-900 to-blue-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-6xl font-bold mb-8 text-center animate-pulse" style="animation: neon-pulse 1.5s ease-in-out infinite;">
+            American Roulette
+        </h1>
         <div class="flex justify-center mb-8">
             <div id="rouletteTable" class="roulette-table"></div>
         </div>
         <div class="flex justify-center items-center space-x-4 mb-8">
-            <button id="spinButton" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            <button id="spinButton" class="bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 text-white font-bold py-2 px-6 rounded-full transform hover:scale-105 transition duration-300 shadow-lg">
                 Spin
             </button>
-            <button id="clearBetsButton" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+            <button id="clearBetsButton" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-bold py-2 px-6 rounded-full transform hover:scale-105 transition duration-300 shadow-lg">
                 Clear Bets
             </button>
-            <select id="betAmount" class="bg-blue-500 text-white py-2 px-4 rounded">
+            <select id="betAmount" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 px-4 rounded-full shadow-lg">
                 <option value="1">$1</option>
                 <option value="5">$5</option>
                 <option value="10" selected>$10</option>
                 <option value="25">$25</option>
                 <option value="100">$100</option>
             </select>
-            <div id="result" class="text-2xl"></div>
+            <div id="result" class="text-2xl font-bold text-yellow-300"></div>
         </div>
         <div class="text-center mb-8">
-            <div id="balance" class="text-xl mb-4">Balance: $1000</div>
-            <div id="currentBet" class="text-xl">Current Bet: $0</div>
+            <div id="balance" class="text-2xl mb-4 font-bold text-green-400">Balance: $1000</div>
+            <div id="currentBet" class="text-xl text-yellow-300">Current Bet: $0</div>
         </div>
         <div class="text-center">
-            <h2 class="text-2xl font-bold mb-4">Betting History</h2>
-            <div id="history" class="text-left max-w-md mx-auto h-40 overflow-y-auto bg-green-800 p-4 rounded"></div>
+            <h2 class="text-3xl font-bold mb-4 text-purple-300">Betting History</h2>
+            <div id="history" class="text-left max-w-md mx-auto h-40 overflow-y-auto bg-gray-800 bg-opacity-50 p-4 rounded-lg shadow-inner"></div>
         </div>
     </div>
 
@@ -280,6 +292,19 @@
             const chips = rouletteTable.querySelectorAll('.chip');
             chips.forEach(chip => chip.remove());
         }
+
+        // Add sparkle effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'absolute w-1 h-1 bg-white rounded-full';
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.animation = `sparkle ${Math.random() * 2 + 1}s linear infinite`;
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 5000);
+        }
+
+        setInterval(createSparkle, 200);
 
         createTable();
         spinButton.addEventListener('click', spin);
