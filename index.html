@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamblingJS - Exciting JavaScript Casino Games</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes neon-pulse {
+            0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de; }
+            50% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #ff00de, 0 0 35px #ff00de, 0 0 40px #ff00de, 0 0 50px #ff00de, 0 0 75px #ff00de; }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .game-card {
+            transition: all 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-gray-900 via-purple-900 to-blue-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <h1 class="text-6xl font-bold mb-8 text-center animate-pulse" style="animation: neon-pulse 1.5s ease-in-out infinite;">
+            GamblingJS
+        </h1>
+        <p class="text-2xl mb-12 text-center text-yellow-300">Experience the thrill of the casino in your browser!</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <a href="/roulette.html" class="game-card block p-6 bg-gradient-to-br from-red-600 to-red-800 rounded-lg overflow-hidden relative">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-2">Roulette</h2>
+                    <p class="text-lg mb-4">Spin the wheel of fortune!</p>
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-2">🎰</span>
+                        <span class="text-sm bg-yellow-400 text-black px-2 py-1 rounded">Popular</span>
+                    </div>
+                </div>
+            </a>
+            <!-- Add more game cards here as you create them -->
+            <div class="game-card block p-6 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg overflow-hidden relative">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-2">Coming Soon</h2>
+                    <p class="text-lg mb-4">More exciting games on the way!</p>
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-2">🎲</span>
+                        <span class="text-sm bg-blue-400 text-black px-2 py-1 rounded">Stay Tuned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center mt-12 pb-6">
+        <p class="text-sm text-gray-400">© 2024 GamblingJS. For entertainment purposes only. Play responsibly.</p>
+    </footer>
+
+    <script>
+        // Add some sparkles to the background
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'absolute w-1 h-1 bg-white rounded-full';
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            sparkle.style.animation = `sparkle ${Math.random() * 2 + 1}s linear infinite`;
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 5000);
+        }
+
+        setInterval(createSparkle, 200);
+    </script>
+</body>
+</html>
